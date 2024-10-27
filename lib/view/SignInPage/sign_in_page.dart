@@ -14,7 +14,8 @@ class _SignInPageState extends State<SignInPage> {
   bool? isChecked = false;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final GlobalKey <FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
@@ -110,7 +111,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             //SignIn or SignUp Text
             Container(
@@ -142,10 +143,9 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
+            const SizedBox(height: 15,),
+            isChanged
+                ?Expanded(
               child: Container(
                 width: width,
                 height: height,
@@ -154,7 +154,7 @@ class _SignInPageState extends State<SignInPage> {
                       topRight: Radius.circular(25),
                       topLeft: Radius.circular(25),
                     ),
-                    color: AppColors.whiteColor,
+                    color: const Color(0xFFECEFF1),
                     border: Border.all(color: Colors.grey.shade200)),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -162,53 +162,58 @@ class _SignInPageState extends State<SignInPage> {
                     children: [
                       //From
                       Form(
-                         key: _formKey,
+                          key: _formKey,
                           child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: emailController,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                prefixIcon: const Icon(Icons.mail),
-                                constraints: BoxConstraints(
-                                    maxWidth: width, maxHeight: height * .08),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  controller: emailController,
+                                  decoration: InputDecoration(
+                                    labelText: "Email",
+                                    prefixIcon: const Icon(Icons.mail),
+                                    constraints: BoxConstraints(
+                                        maxWidth: width,
+                                        maxHeight: height * .08),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "enter email";
+                                    }
+                                    return null;
+                                  },
                                 ),
-                              ),
-                              validator: (String? value){
-                                if (value == null || value.isEmpty ){
-                                  return "enter email";
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            TextFormField(
-                              controller: passwordController,
-                              decoration: InputDecoration(
-                                labelText: "Password",
-                                suffixIcon: const Icon(Icons.visibility_off_outlined),
-                                constraints: BoxConstraints(
-                                    maxWidth: width, maxHeight: height * .08),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                                const SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                              validator: (String? value){
-                                if (value == null || value.isEmpty ){
-                                  return "enter password";
-                                }
-                                return null;
-                              },
+                                TextFormField(
+                                  controller: passwordController,
+                                  decoration: InputDecoration(
+                                    labelText: "Password",
+                                    suffixIcon: const Icon(
+                                        Icons.visibility_off_outlined),
+                                    constraints: BoxConstraints(
+                                        maxWidth: width,
+                                        maxHeight: height * .08),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "enter password";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )),
+                          )),
                       //forget text
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -228,28 +233,33 @@ class _SignInPageState extends State<SignInPage> {
                           TextButton(
                               onPressed: () {},
                               child: Text("Forget Password?",
-                                  style: small?.copyWith(color: AppColors.primaryColor))),
+                                  style: small?.copyWith(
+                                      color: AppColors.primaryColor))),
                         ],
                       ),
-                      SizedBox(height:height*.04,),
+                      SizedBox(
+                        height: height * .04,
+                      ),
                       //Button
                       SizedBox(
                         height: height * .06,
                         width: width,
                         child: ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState!.validate() && isChecked ==true){
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("success"))
-                              );
-                              }else{
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text("Filled required value")));
+                              if (_formKey.currentState!.validate() &&
+                                  isChecked == true) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content: Text("success")));
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        "Filled required value")));
                               }
-
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
+                              backgroundColor: AppColors.primaryColor,
                               shape: const StadiumBorder(
                                 side: BorderSide(
                                   color: AppColors.brownShadeColor,
@@ -258,17 +268,283 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                             child: Text(
                               "Continue",
-                              style:
-                                  medium?.copyWith(color: AppColors.whiteColor),
+                              style: medium?.copyWith(
+                                  color: AppColors.whiteColor),
                             )),
                       ),
                       // or option
-                      Row(children: [
-                        Divider(color: Colors.grey,thickness: 1,height: 2,),
-                        Text("or"),
-                        Divider()
-                      ],),
+                      SizedBox(height: 5,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            height: height * .0015,
+                            width: width * .3,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "or",
+                            style: small,
+                          ),
+                          Container(
+                            height: height * .0015,
+                            width: width * .3,
+                            color: Colors.grey,
+                          ),
+                        ],
+                      ),
                       //continue with other
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: height * .08,
+                            width: width * .15,
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    backgroundColor: AppColors.whiteColor,
+                                    shape: CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.googleIcon,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    shape: CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.facebookIcon,
+                                  height: height * .05,
+                                  width: width * .12,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          SizedBox(
+                            height: height * .08,
+                            width: width * .15,
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    backgroundColor: AppColors.whiteColor,
+                                    shape: const CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.appleIcon,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+                : Expanded(
+              child: Container(
+                width: width,
+                height: height,
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(25),
+                      topLeft: Radius.circular(25),
+                    ),
+                    color: const Color(0xFFECEFF1),
+                    border: Border.all(color: Colors.grey.shade200)),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      //From
+                      Form(
+                          key: _formKey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              children: [
+                                TextFormField(
+                                  controller: nameController,
+                                  decoration: InputDecoration(
+                                    labelText: "User Name",
+                                    prefixIcon: const Icon(Icons.person),
+                                    constraints: BoxConstraints(
+                                        maxWidth: width,
+                                        maxHeight: height * .08),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "enter user name";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: emailController,
+                                  decoration: InputDecoration(
+                                    labelText: "Email",
+                                    prefixIcon: const Icon(Icons.mail),
+                                    constraints: BoxConstraints(
+                                        maxWidth: width,
+                                        maxHeight: height * .08),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "enter email";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: passwordController,
+                                  decoration: InputDecoration(
+                                    labelText: "Password",
+                                    suffixIcon: const Icon(
+                                        Icons.visibility_off_outlined),
+                                    constraints: BoxConstraints(
+                                        maxWidth: width,
+                                        maxHeight: height * .08),
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  validator: (String? value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "enter password";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ],
+                            ),
+                          )),
+                      //forget text
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Checkbox(
+                            value: isChecked,
+                            activeColor: Colors.black,
+                            onChanged: (value) {
+                              setState(() {
+                                isChecked = value;
+                                print(value);
+                              });
+                            },
+                            checkColor: AppColors.whiteColor,
+                          ),
+                          Text("remember for me!", style: small),
+                          TextButton(
+                              onPressed: () {},
+                              child: Text("Forget Password?",
+                                  style: small?.copyWith(
+                                      color: Colors.indigo))),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * .04,
+                      ),
+                      //Button
+                      SizedBox(
+                        height: height * .06,
+                        width: width,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate() &&
+                                  isChecked == true) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content: Text("success")));
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content: Text(
+                                        "Filled required value")));
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.indigo,
+                              shape: const StadiumBorder(
+                                side: BorderSide(
+                                  color: AppColors.brownShadeColor,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              "Continue",
+                              style: medium?.copyWith(
+                                  color: AppColors.whiteColor),
+                            )),
+                      ),
+                      //continue with other
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: height * .08,
+                            width: width * .15,
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    backgroundColor: AppColors.whiteColor,
+                                    shape: CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.googleIcon,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    shape: CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.facebookIcon,
+                                  height: height * .05,
+                                  width: width * .12,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+                          SizedBox(
+                            height: height * .08,
+                            width: width * .15,
+                            child: IconButton(
+                                onPressed: () {},
+                                style: IconButton.styleFrom(
+                                    backgroundColor: AppColors.whiteColor,
+                                    shape: const CircleBorder()
+                                ),
+                                icon: Image.asset(
+                                  ImageUrl.appleIcon,
+                                  fit: BoxFit.cover,
+                                )),
+                          ),
+
+                        ],
+                      )
                     ],
                   ),
                 ),
