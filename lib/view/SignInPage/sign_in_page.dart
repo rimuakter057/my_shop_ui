@@ -12,6 +12,9 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   bool isChanged = false;
   bool? isChecked = false;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey <FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.sizeOf(context).height;
@@ -51,6 +54,7 @@ class _SignInPageState extends State<SignInPage> {
                 ],
               ),
             ),
+            //switch button type
             Container(
               height: height * .06,
               width: width * .6,
@@ -108,6 +112,7 @@ class _SignInPageState extends State<SignInPage> {
             const SizedBox(
               height: 20,
             ),
+            //SignIn or SignUp Text
             Container(
               height: height * .05,
               width: width * .4,
@@ -115,7 +120,7 @@ class _SignInPageState extends State<SignInPage> {
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(25),
                     bottomRight: Radius.circular(25)),
-                color: isChanged ? Colors.teal : Colors.indigo,
+                color: isChanged ? AppColors.primaryColor : Colors.indigo,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.white
@@ -155,39 +160,56 @@ class _SignInPageState extends State<SignInPage> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
+                      //From
                       Form(
+                         key: _formKey,
                           child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
                           children: [
                             TextFormField(
+                              controller: emailController,
                               decoration: InputDecoration(
                                 labelText: "Email",
-                                prefixIcon: Icon(Icons.mail),
+                                prefixIcon: const Icon(Icons.mail),
                                 constraints: BoxConstraints(
-                                    maxWidth: width, maxHeight: height * .07),
+                                    maxWidth: width, maxHeight: height * .08),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
+                              validator: (String? value){
+                                if (value == null || value.isEmpty ){
+                                  return "enter email";
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(
                               height: 10,
                             ),
                             TextFormField(
+                              controller: passwordController,
                               decoration: InputDecoration(
                                 labelText: "Password",
-                                suffixIcon: Icon(Icons.visibility_off_outlined),
+                                suffixIcon: const Icon(Icons.visibility_off_outlined),
                                 constraints: BoxConstraints(
-                                    maxWidth: width, maxHeight: height * .07),
+                                    maxWidth: width, maxHeight: height * .08),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
+                              validator: (String? value){
+                                if (value == null || value.isEmpty ){
+                                  return "enter password";
+                                }
+                                return null;
+                              },
                             ),
                           ],
                         ),
                       )),
+                      //forget text
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -197,6 +219,7 @@ class _SignInPageState extends State<SignInPage> {
                             onChanged: (value) {
                               setState(() {
                                 isChecked = value;
+                                print(value);
                               });
                             },
                             checkColor: AppColors.whiteColor,
@@ -205,15 +228,26 @@ class _SignInPageState extends State<SignInPage> {
                           TextButton(
                               onPressed: () {},
                               child: Text("Forget Password?",
-                                  style: small?.copyWith(
-                                      color: AppColors.primaryColor))),
+                                  style: small?.copyWith(color: AppColors.primaryColor))),
                         ],
                       ),
+                      SizedBox(height:height*.04,),
+                      //Button
                       SizedBox(
                         height: height * .06,
                         width: width,
                         child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (_formKey.currentState!.validate() && isChecked ==true){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("success"))
+                              );
+                              }else{
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(content: Text("Filled required value")));
+                              }
+
+                            },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryColor,
                               shape: const StadiumBorder(
@@ -228,6 +262,13 @@ class _SignInPageState extends State<SignInPage> {
                                   medium?.copyWith(color: AppColors.whiteColor),
                             )),
                       ),
+                      // or option
+                      Row(children: [
+                        Divider(color: Colors.grey,thickness: 1,height: 2,),
+                        Text("or"),
+                        Divider()
+                      ],),
+                      //continue with other
                     ],
                   ),
                 ),
