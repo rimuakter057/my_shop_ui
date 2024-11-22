@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_shop_ui/utils/color.dart';
 import 'package:my_shop_ui/utils/image_url.dart';
+import 'package:my_shop_ui/view/HomePage/home_page.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -10,8 +11,15 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  // switch button
   bool isChanged = false;
+  // check box
   bool? isChecked = false;
+  // hide pass
+  bool isObscure = true;
+  // color change
+  bool isActive = false;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -55,19 +63,24 @@ class _SignInPageState extends State<SignInPage> {
                 ],
               ),
             ),
-            //switch button type
+
+
             Container(
               height: height * .06,
               width: width * .6,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30), color: Colors.black),
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.black,
+              ),
               child: Row(
                 children: [
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        isChanged = !isChanged;
-                      });
+                      if (!isChanged) {
+                        setState(() {
+                          isChanged = true;
+                        });
+                      }
                     },
                     child: Container(
                       height: height * .06,
@@ -77,19 +90,23 @@ class _SignInPageState extends State<SignInPage> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(
-                          child: Text(
-                        "SignIn",
-                        style: TextStyle(
+                        child: Text(
+                          "SignIn",
+                          style: TextStyle(
                             color: isChanged ? Colors.black : Colors.grey,
-                            fontSize: isChanged ? 25 : 16),
-                      )),
+                            fontSize: isChanged ? 25 : 16,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        isChanged = !isChanged;
-                      });
+                      if (isChanged) {
+                        setState(() {
+                          isChanged = false;
+                        });
+                      }
                     },
                     child: Container(
                       height: height * .06,
@@ -99,12 +116,14 @@ class _SignInPageState extends State<SignInPage> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Center(
-                          child: Text(
-                        "SignUp",
-                        style: TextStyle(
+                        child: Text(
+                          "SignUp",
+                          style: TextStyle(
                             color: isChanged ? Colors.grey : Colors.black,
-                            fontSize: isChanged ? 16 : 25),
-                      )),
+                            fontSize: isChanged ? 16 : 25,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -248,15 +267,15 @@ class _SignInPageState extends State<SignInPage> {
                             onPressed: () {
                               if (_formKey.currentState!.validate() &&
                                   isChecked == true) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                    content: Text("success")));
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                     content: Text(
                                         "Filled required value")));
                               }
+
+
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryColor,
@@ -273,7 +292,7 @@ class _SignInPageState extends State<SignInPage> {
                             )),
                       ),
                       // or option
-                      SizedBox(height: 5,),
+                      const SizedBox(height: 5,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -311,20 +330,18 @@ class _SignInPageState extends State<SignInPage> {
                                   fit: BoxFit.cover,
                                 )),
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: IconButton(
-                                onPressed: () {},
-                                style: IconButton.styleFrom(
-                                    shape: CircleBorder()
-                                ),
-                                icon: Image.asset(
-                                  ImageUrl.facebookIcon,
-                                  height: height * .05,
-                                  width: width * .12,
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
+                          IconButton(
+                              onPressed: () {},
+                              style: IconButton.styleFrom(
+                                  backgroundColor: AppColors.whiteColor,
+                                  shape: CircleBorder()
+                              ),
+                              icon: Image.asset(
+                                ImageUrl.facebookIcon2,
+                                height: height * .06,
+                                width: width * .13,
+                                fit: BoxFit.cover,
+                              )),
                           SizedBox(
                             height: height * .08,
                             width: width * .15,
@@ -393,8 +410,9 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                                 TextFormField(
                                   controller: emailController,
+                                  keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
-                                    labelText: "Email",
+                                    labelText: "mail334@gmail.com",
                                     prefixIcon: const Icon(Icons.mail),
                                     constraints: BoxConstraints(
                                         maxWidth: width,
@@ -415,11 +433,28 @@ class _SignInPageState extends State<SignInPage> {
                                   height: 10,
                                 ),
                                 TextFormField(
+                                  obscureText: isObscure!,
+                                  onChanged:(value){
+                                    if (passwordController.value.text.length>=8) {
+                                      setState(() {
+                                        {isActive = true;
+                                        }
+                                      });
+                                    }
+
+                                  },
                                   controller: passwordController,
+                                     maxLength: 16,
                                   decoration: InputDecoration(
+                                    helperText: "Minimum 8 characters",
                                     labelText: "Password",
-                                    suffixIcon: const Icon(
-                                        Icons.visibility_off_outlined),
+                                    suffixIcon:IconButton(onPressed:(){
+                                      setState(() {
+                                        isObscure = !isObscure;
+                                      });
+                                    },
+                                        icon:Icon(isObscure? Icons.visibility:Icons.visibility_off)),
+
                                     constraints: BoxConstraints(
                                         maxWidth: width,
                                         maxHeight: height * .08),
@@ -434,11 +469,11 @@ class _SignInPageState extends State<SignInPage> {
                                     }
                                     return null;
                                   },
+
                                 ),
                               ],
                             ),
                           )),
-                      //forget text
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -453,16 +488,11 @@ class _SignInPageState extends State<SignInPage> {
                             },
                             checkColor: AppColors.whiteColor,
                           ),
-                          Text("remember for me!", style: small),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Forget Password?",
-                                  style: small?.copyWith(
-                                      color: Colors.indigo))),
+                          Text("i accept all terms", style: small),
                         ],
                       ),
                       SizedBox(
-                        height: height * .04,
+                        height: height * .02,
                       ),
                       //Button
                       SizedBox(
@@ -471,10 +501,15 @@ class _SignInPageState extends State<SignInPage> {
                         child: ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate() &&
-                                  isChecked == true) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                    content: Text("success")));
+                                  isChecked == true && passwordController.value.text.length>=8)
+                              setState(() {
+                             {isActive = true;
+                                }
+                              });
+
+                              if (_formKey.currentState!.validate() &&
+                                  isChecked == true && passwordController.value.text.length>=8) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
@@ -483,7 +518,8 @@ class _SignInPageState extends State<SignInPage> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.indigo,
+                              backgroundColor:isActive?
+                              Colors.indigo:Colors.grey,
                               shape: const StadiumBorder(
                                 side: BorderSide(
                                   color: AppColors.brownShadeColor,
@@ -495,6 +531,27 @@ class _SignInPageState extends State<SignInPage> {
                               style: medium?.copyWith(
                                   color: AppColors.whiteColor),
                             )),
+                      ),
+                       // or
+                      const SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            height: height * .0015,
+                            width: width * .3,
+                            color: Colors.grey,
+                          ),
+                          Text(
+                            "or",
+                            style: small,
+                          ),
+                          Container(
+                            height: height * .0015,
+                            width: width * .3,
+                            color: Colors.grey,
+                          ),
+                        ],
                       ),
                       //continue with other
                       Row(
@@ -514,20 +571,18 @@ class _SignInPageState extends State<SignInPage> {
                                   fit: BoxFit.cover,
                                 )),
                           ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: IconButton(
-                                onPressed: () {},
-                                style: IconButton.styleFrom(
-                                    shape: CircleBorder()
-                                ),
-                                icon: Image.asset(
-                                  ImageUrl.facebookIcon,
-                                  height: height * .05,
-                                  width: width * .12,
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
+                          IconButton(
+                              onPressed: () {},
+                              style: IconButton.styleFrom(
+                                  backgroundColor: AppColors.whiteColor,
+                                  shape: CircleBorder()
+                              ),
+                              icon: Image.asset(
+                                ImageUrl.facebookIcon2,
+                                height: height * .06,
+                                width: width * .13,
+                                fit: BoxFit.cover,
+                              )),
                           SizedBox(
                             height: height * .08,
                             width: width * .15,
@@ -539,6 +594,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ),
                                 icon: Image.asset(
                                   ImageUrl.appleIcon,
+
                                   fit: BoxFit.cover,
                                 )),
                           ),
