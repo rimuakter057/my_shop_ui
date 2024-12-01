@@ -175,190 +175,192 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     color: const Color(0xFFECEFF1),
                     border: Border.all(color: Colors.grey.shade200)),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      //From
-                      Form(
-                          key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: emailController,
-                                  decoration: InputDecoration(
-                                    labelText: "Email",
-                                    prefixIcon: const Icon(Icons.mail),
-                                    constraints: BoxConstraints(
-                                        maxWidth: width,
-                                        maxHeight: height * .08),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        //From
+                        Form(
+                            key: _formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: emailController,
+                                    decoration: InputDecoration(
+                                      labelText: "Email",
+                                      prefixIcon: const Icon(Icons.mail),
+                                      constraints: BoxConstraints(
+                                          maxWidth: width,
+                                          maxHeight: height * .08),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                      ),
                                     ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "enter email";
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "enter email";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: passwordController,
-                                  decoration: InputDecoration(
-                                    labelText: "Password",
-                                    suffixIcon: const Icon(
-                                        Icons.visibility_off_outlined),
-                                    constraints: BoxConstraints(
-                                        maxWidth: width,
-                                        maxHeight: height * .08),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    controller: passwordController,
+                                    decoration: InputDecoration(
+                                      labelText: "Password",
+                                      suffixIcon: const Icon(
+                                          Icons.visibility_off_outlined),
+                                      constraints: BoxConstraints(
+                                          maxWidth: width,
+                                          maxHeight: height * .08),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                      ),
                                     ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "enter password";
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "enter password";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ],
+                                ],
+                              ),
+                            )),
+                        //forget text
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Checkbox(
+                              value: isChecked,
+                              activeColor: Colors.black,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value;
+                                  print(value);
+                                });
+                              },
+                              checkColor: AppColors.whiteColor,
                             ),
-                          )),
-                      //forget text
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Checkbox(
-                            value: isChecked,
-                            activeColor: Colors.black,
-                            onChanged: (value) {
-                              setState(() {
-                                isChecked = value;
-                                print(value);
-                              });
-                            },
-                            checkColor: AppColors.whiteColor,
-                          ),
-                          Text("remember for me!", style: small),
-                          TextButton(
-                              onPressed: () {},
-                              child: Text("Forget Password?",
-                                  style: small?.copyWith(
-                                      color: AppColors.primaryColor))),
-                        ],
-                      ),
-                      SizedBox(
-                        height: height * .04,
-                      ),
-                      //Button
-                      SizedBox(
-                        height: height * .06,
-                        width: width,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  isChecked == true) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                    content: Text(
-                                        "Filled required value")));
-                              }
-
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primaryColor,
-                              shape: const StadiumBorder(
-                                side: BorderSide(
-                                  color: AppColors.brownShadeColor,
+                            Text("remember for me!", style: small),
+                            TextButton(
+                                onPressed: () {},
+                                child: Text("Forget Password?",
+                                    style: small?.copyWith(
+                                        color: AppColors.primaryColor))),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * .04,
+                        ),
+                        //Button
+                        SizedBox(
+                          height: height * .06,
+                          width: width,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate() &&
+                                    isChecked == true) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Filled required value")));
+                                }
+                  
+                  
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                                shape: const StadiumBorder(
+                                  side: BorderSide(
+                                    color: AppColors.brownShadeColor,
+                                  ),
                                 ),
                               ),
+                              child: Text(
+                                "Continue",
+                                style: medium?.copyWith(
+                                    color: AppColors.whiteColor),
+                              )),
+                        ),
+                        // or option
+                        const SizedBox(height: 5,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: height * .0015,
+                              width: width * .3,
+                              color: Colors.grey,
                             ),
-                            child: Text(
-                              "Continue",
-                              style: medium?.copyWith(
-                                  color: AppColors.whiteColor),
-                            )),
-                      ),
-                      // or option
-                      const SizedBox(height: 5,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            height: height * .0015,
-                            width: width * .3,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            "or",
-                            style: small,
-                          ),
-                          Container(
-                            height: height * .0015,
-                            width: width * .3,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-                      //continue with other
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: height * .08,
-                            width: width * .15,
-                            child: IconButton(
+                            Text(
+                              "or",
+                              style: small,
+                            ),
+                            Container(
+                              height: height * .0015,
+                              width: width * .3,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                        //continue with other
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: height * .08,
+                              width: width * .15,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.whiteColor,
+                                      shape: CircleBorder()
+                                  ),
+                                  icon: Image.asset(
+                                    ImageUrl.googleIcon,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                            IconButton(
                                 onPressed: () {},
                                 style: IconButton.styleFrom(
                                     backgroundColor: AppColors.whiteColor,
                                     shape: CircleBorder()
                                 ),
                                 icon: Image.asset(
-                                  ImageUrl.googleIcon,
+                                  ImageUrl.facebookIcon2,
+                                  height: height * .06,
+                                  width: width * .13,
                                   fit: BoxFit.cover,
                                 )),
-                          ),
-                          IconButton(
-                              onPressed: () {},
-                              style: IconButton.styleFrom(
-                                  backgroundColor: AppColors.whiteColor,
-                                  shape: CircleBorder()
-                              ),
-                              icon: Image.asset(
-                                ImageUrl.facebookIcon2,
-                                height: height * .06,
-                                width: width * .13,
-                                fit: BoxFit.cover,
-                              )),
-                          SizedBox(
-                            height: height * .08,
-                            width: width * .15,
-                            child: IconButton(
-                                onPressed: () {},
-                                style: IconButton.styleFrom(
-                                    backgroundColor: AppColors.whiteColor,
-                                    shape: const CircleBorder()
-                                ),
-                                icon: Image.asset(
-                                  ImageUrl.appleIcon,
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                        ],
-                      )
-                    ],
+                            SizedBox(
+                              height: height * .08,
+                              width: width * .15,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.whiteColor,
+                                      shape: const CircleBorder()
+                                  ),
+                                  icon: Image.asset(
+                                    ImageUrl.appleIcon,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -374,234 +376,236 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                     color: const Color(0xFFECEFF1),
                     border: Border.all(color: Colors.grey.shade200)),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      //From
-                      Form(
-                          key: _formKey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  controller: nameController,
-                                  decoration: InputDecoration(
-                                    labelText: "User Name",
-                                    prefixIcon: const Icon(Icons.person),
-                                    constraints: BoxConstraints(
-                                        maxWidth: width,
-                                        maxHeight: height * .08),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        //From
+                        Form(
+                            key: _formKey,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    controller: nameController,
+                                    decoration: InputDecoration(
+                                      labelText: "User Name",
+                                      prefixIcon: const Icon(Icons.person),
+                                      constraints: BoxConstraints(
+                                          maxWidth: width,
+                                          maxHeight: height * .08),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                      ),
                                     ),
-                                  ),
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "enter user name";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  controller: emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                    labelText: "mail334@gmail.com",
-                                    prefixIcon: const Icon(Icons.mail),
-                                    constraints: BoxConstraints(
-                                        maxWidth: width,
-                                        maxHeight: height * .08),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
-                                    ),
-                                  ),
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "enter email";
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                TextFormField(
-                                  obscureText: isObscure!,
-                                  onChanged:(value){
-                                    if (passwordController.value.text.length>=8) {
-                                      setState(() {
-                                        {isActive = true;
-                                        }
-                                      });
-                                    }
-
-                                  },
-                                  controller: passwordController,
-                                     maxLength: 16,
-                                  decoration: InputDecoration(
-                                    helperText: "Minimum 8 characters",
-                                    labelText: "Password",
-                                    suffixIcon:IconButton(onPressed:(){
-                                      setState(() {
-                                        isObscure = !isObscure;
-                                      });
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "enter user name";
+                                      }
+                                      return null;
                                     },
-                                        icon:Icon(isObscure? Icons.visibility:Icons.visibility_off)),
-
-                                    constraints: BoxConstraints(
-                                        maxWidth: width,
-                                        maxHeight: height * .08),
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5),
-                                    ),
                                   ),
-                                  validator: (String? value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "enter password";
-                                    }
-                                    return null;
-                                  },
-
-                                ),
-                              ],
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    controller: emailController,
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: InputDecoration(
+                                      labelText: "mail334@gmail.com",
+                                      prefixIcon: const Icon(Icons.mail),
+                                      constraints: BoxConstraints(
+                                          maxWidth: width,
+                                          maxHeight: height * .08),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "enter email";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextFormField(
+                                    obscureText: isObscure!,
+                                    onChanged:(value){
+                                      if (passwordController.value.text.length>=8) {
+                                        setState(() {
+                                          {isActive = true;
+                                          }
+                                        });
+                                      }
+                  
+                                    },
+                                    controller: passwordController,
+                                       maxLength: 16,
+                                    decoration: InputDecoration(
+                                      helperText: "Minimum 8 characters",
+                                      labelText: "Password",
+                                      suffixIcon:IconButton(onPressed:(){
+                                        setState(() {
+                                          isObscure = !isObscure;
+                                        });
+                                      },
+                                          icon:Icon(isObscure? Icons.visibility:Icons.visibility_off)),
+                  
+                                      constraints: BoxConstraints(
+                                          maxWidth: width,
+                                          maxHeight: height * .08),
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    validator: (String? value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "enter password";
+                                      }
+                                      return null;
+                                    },
+                  
+                                  ),
+                                ],
+                              ),
+                            )),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Checkbox(
+                              value: isChecked,
+                              activeColor: Colors.black,
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value;
+                                  print(value);
+                                });
+                              },
+                              checkColor: AppColors.whiteColor,
                             ),
-                          )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Checkbox(
-                            value: isChecked,
-                            activeColor: Colors.black,
-                            onChanged: (value) {
-                              setState(() {
-                                isChecked = value;
-                                print(value);
-                              });
-                            },
-                            checkColor: AppColors.whiteColor,
-                          ),
-                          Text("i accept all terms", style: small),
-                        ],
-                      ),
-                      SizedBox(
-                        height: height * .02,
-                      ),
-                      //Button
-                      SizedBox(
-                        height: height * .06,
-                        width: width,
-                        child: ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate() &&
-                                  isChecked == true && passwordController.value.text.length>=8)
-                              setState(() {
-                             {isActive = true;
+                            Text("i accept all terms", style: small),
+                          ],
+                        ),
+                        SizedBox(
+                          height: height * .02,
+                        ),
+                        //Button
+                        SizedBox(
+                          height: height * .06,
+                          width: width,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate() &&
+                                    isChecked == true && passwordController.value.text.length>=8)
+                                setState(() {
+                               {isActive = true;
+                                  }
+                                });
+                  
+                                if (_formKey.currentState!.validate() &&
+                                    isChecked == true && passwordController.value.text.length>=8) {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                      content: Text(
+                                          "Filled required value")));
                                 }
-                              });
-
-                              if (_formKey.currentState!.validate() &&
-                                  isChecked == true && passwordController.value.text.length>=8) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                    content: Text(
-                                        "Filled required value")));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:isActive?
-                              Colors.indigo:Colors.grey,
-                              shape: const StadiumBorder(
-                                side: BorderSide(
-                                  color: AppColors.brownShadeColor,
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:isActive?
+                                Colors.indigo:Colors.grey,
+                                shape: const StadiumBorder(
+                                  side: BorderSide(
+                                    color: AppColors.brownShadeColor,
+                                  ),
                                 ),
                               ),
+                              child: Text(
+                                "Continue",
+                                style: medium?.copyWith(
+                                    color: AppColors.whiteColor),
+                              )),
+                        ),
+                         // or
+                        const SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              height: height * .0015,
+                              width: width * .3,
+                              color: Colors.grey,
                             ),
-                            child: Text(
-                              "Continue",
-                              style: medium?.copyWith(
-                                  color: AppColors.whiteColor),
-                            )),
-                      ),
-                       // or
-                      const SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            height: height * .0015,
-                            width: width * .3,
-                            color: Colors.grey,
-                          ),
-                          Text(
-                            "or",
-                            style: small,
-                          ),
-                          Container(
-                            height: height * .0015,
-                            width: width * .3,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-                      //continue with other
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: height * .08,
-                            width: width * .15,
-                            child: IconButton(
+                            Text(
+                              "or",
+                              style: small,
+                            ),
+                            Container(
+                              height: height * .0015,
+                              width: width * .3,
+                              color: Colors.grey,
+                            ),
+                          ],
+                        ),
+                        //continue with other
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: height * .08,
+                              width: width * .15,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.whiteColor,
+                                      shape: CircleBorder()
+                                  ),
+                                  icon: Image.asset(
+                                    ImageUrl.googleIcon,
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                            IconButton(
                                 onPressed: () {},
                                 style: IconButton.styleFrom(
                                     backgroundColor: AppColors.whiteColor,
                                     shape: CircleBorder()
                                 ),
                                 icon: Image.asset(
-                                  ImageUrl.googleIcon,
+                                  ImageUrl.facebookIcon2,
+                                  height: height * .06,
+                                  width: width * .13,
                                   fit: BoxFit.cover,
                                 )),
-                          ),
-                          IconButton(
-                              onPressed: () {},
-                              style: IconButton.styleFrom(
-                                  backgroundColor: AppColors.whiteColor,
-                                  shape: CircleBorder()
-                              ),
-                              icon: Image.asset(
-                                ImageUrl.facebookIcon2,
-                                height: height * .06,
-                                width: width * .13,
-                                fit: BoxFit.cover,
-                              )),
-                          SizedBox(
-                            height: height * .08,
-                            width: width * .15,
-                            child: IconButton(
-                                onPressed: () {},
-                                style: IconButton.styleFrom(
-                                    backgroundColor: AppColors.whiteColor,
-                                    shape: const CircleBorder()
-                                ),
-                                icon: Image.asset(
-                                  ImageUrl.appleIcon,
-
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-
-                        ],
-                      )
-                    ],
+                            SizedBox(
+                              height: height * .08,
+                              width: width * .15,
+                              child: IconButton(
+                                  onPressed: () {},
+                                  style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.whiteColor,
+                                      shape: const CircleBorder()
+                                  ),
+                                  icon: Image.asset(
+                                    ImageUrl.appleIcon,
+                  
+                                    fit: BoxFit.cover,
+                                  )),
+                            ),
+                  
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
